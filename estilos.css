@@ -9,6 +9,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-family: "Montserrat";
+    font-size: 300;
 }
 
 #incognitas {
@@ -45,4 +47,8 @@ body {
     font-size: 20px;
     border-radius: 4px;
     cursor: pointer;
+}
+
+#inicio:hover {
+    background: #d59852;
 }

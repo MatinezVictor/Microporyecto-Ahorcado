@@ -3,23 +3,38 @@ const startButton = document.getElementById('inicio');
 const usedLettersElement = document.getElementById('historial_palabras');
 const wordReveal = document.getElementById('palabra_escogida');
 const remainingTries = document.getElementById('intentos_restantes');
+const txtWins = document.getElementById('victorias');
+const txtLoses = document.getElementById('derrotas');
+const gameDesc1 = document.getElementById('desc1');
+const gameDesc2 = document.getElementById('desc2');
+
 
 let tries = 6;
+let wins = 0;
+let loses = 0;
 
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 ctx.canvas.width  = 0;
 ctx.canvas.height = 0;
 
-const words = ['Carne','Martillo', 'Lavadora','Sucio','Cangrejo','Lento','Alimentos','Delgado','Cubo','Comida','Caracol','Abajo','Alumno','Bonito','Cesta','Sol','Beber','Botella','Hamburguesa','Invierno'];
+const words = ['Carne','Martillo','Lavadora',
+                'Sucio','Cangrejo','Lento',
+                'Alimentos','Delgado','Cubo',
+                'Comida','Caracol','Abajo',
+                'Alumno','Bonito','Cesta',
+                'Sol','Beber','Botella',
+                'Hamburguesa','Invierno','Playa',
+                'Arco','Posada','Hotel',
+                'Televisor','Manzana','Pizza'];
 
 const bodyParts = [
-    [4,2,1,1],
-    [4,3,1,2],
-    [3,5,1,1],
-    [5,5,1,1],
-    [3,3,1,1],
-    [5,3,1,1]
+    [6,2,3,3],
+    [7,3,1,6],
+    [4,6,3,1],
+    [8,6,3,1],
+    [8,9,1,3],
+    [6,9,1,3]
 ];
 
 let palabraSeleccionada;
@@ -34,12 +49,12 @@ const añadirLetra = letter => {
 }
 
 const añadirParteCuerpo = bodyPart => {
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = '#000000';
     ctx.fillRect(...bodyPart);
 };
 
 const letraEquivocada = () => {
-    tries = tries - 1;
+    tries--;
     remainingTries.innerHTML = `Intentos restantes: ${tries}`;
     añadirParteCuerpo(bodyParts[mistakes]);
     mistakes++;
@@ -52,9 +67,11 @@ const endGame = (condition) => {
     remainingTries.innerHTML = '';
     if(condition === 'win') {
         wordReveal.innerHTML = '¡Has adivinado la palabra!';
+        wins++;
     }
     else {
         wordReveal.innerHTML = `La palabra era: ${palabraSeleccionada.join().replaceAll(',', '')}`;
+        loses++;
     }
 }
 
@@ -102,15 +119,16 @@ const seleccionRandom = () => {
 };
 
 const dibujarHombre = () => {
-    ctx.canvas.width  = 120;
-    ctx.canvas.height = 160;
-    ctx.scale(20, 20);
+    ctx.canvas.width  = 200;
+    ctx.canvas.height = 200;
+    ctx.scale(15, 15);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = '#d95d39';
-    ctx.fillRect(0, 7, 4, 1);
-    ctx.fillRect(1, 0, 1, 8);
-    ctx.fillRect(2, 0, 3, 1);
-    ctx.fillRect(4, 1, 1, 1);
+    ctx.fillRect(0, 12, 4, 1);
+    ctx.fillRect(1, 0, 1, 12);
+    ctx.fillRect(2, 0, 7, 1);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(7, 1, 1, 1);
 };
 
 const startGame = () => {
@@ -118,6 +136,10 @@ const startGame = () => {
     letrasUsadas = [];
     mistakes = 0;
     hits = 0;
+    gameDesc1.remove();
+    gameDesc2.remove();
+    txtWins.innerHTML = `Wins: ${wins}`;
+    txtLoses.innerHTML = `Loses: ${loses}`;
     wordContainer.innerHTML = '';
     usedLettersElement.innerHTML = '';
     startButton.style.display = 'none';
